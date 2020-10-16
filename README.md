@@ -24,7 +24,7 @@ pip install Selenium4R
 
 **一些小改动：**
 
-1. 移除了`find_element`和`find_elements`方法中`by`参数的默认值，以免在直接使用这两个方法时因为不知道默认值而造成困扰
+1. 移除了`find_element`和`find_elements`方法中`by`参数的默认值（ID），以免在调用方法时因为不知道存在默认值而造成困扰
 
 **待完成功能：**
 
