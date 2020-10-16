@@ -11,5 +11,5 @@
 1. 没有定位到标签不再返回异常，而是返回None
 """
 
-from .WebDriver import Chrome
+from .webdriver import Chrome
 from .common.JavaScriptLibrary import JavaScriptLibrary

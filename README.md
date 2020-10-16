@@ -19,7 +19,7 @@ pip install Selenium4R
 
 **调整功能：**
 
-1. 没有定位到标签不再返回异常，而是返回指定的默认值
+1. 没有定位到标签不再产生`NoSuchElementException`异常，而是返回空标签对象（`NoneElement`）；空标签对象的属性均为空，在空标签对象中定位任何对象的返回值均为空标签对象
 2. 支持多种形式的`executable_path`参数，兼容ChromeDriver可执行文件路径、`chromedriver`环境变量和ChromeDriver缓存地址
 
 **一些小改动：**

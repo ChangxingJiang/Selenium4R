@@ -1,13 +1,15 @@
 import os
 import time
+from typing import List
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 from webdriver_manager.chrome import ChromeDriverManager
 
-from .WebElement import MyElement
 from .common.JavaScriptLibrary import JavaScriptLibrary
+from .webelement import NodeElement
+from .webelement import NoneElement
 
 
 class Chrome(WebDriver):
@@ -79,69 +81,21 @@ class Chrome(WebDriver):
           """
         })
 
-    def find_element_by_id(self, id_, default=None):
-        return self.find_element(by=By.ID, value=id_, default=default)
-
-    def find_elements_by_id(self, id_, default=None):
-        return self.find_elements(by=By.ID, value=id_, default=default)
-
-    def find_element_by_xpath(self, xpath, default=None):
-        return self.find_element(by=By.XPATH, value=xpath, default=default)
-
-    def find_elements_by_xpath(self, xpath, default=None):
-        return self.find_elements(by=By.XPATH, value=xpath, default=default)
-
-    def find_element_by_link_text(self, link_text, default=None):
-        return self.find_element(by=By.LINK_TEXT, value=link_text, default=default)
-
-    def find_elements_by_link_text(self, text, default=None):
-        return self.find_elements(by=By.LINK_TEXT, value=text, default=default)
-
-    def find_element_by_partial_link_text(self, link_text, default=None):
-        return self.find_element(by=By.PARTIAL_LINK_TEXT, value=link_text, default=default)
-
-    def find_elements_by_partial_link_text(self, link_text, default=None):
-        return self.find_elements(by=By.PARTIAL_LINK_TEXT, value=link_text, default=default)
-
-    def find_element_by_name(self, name, default=None):
-        return self.find_element(by=By.NAME, value=name, default=default)
-
-    def find_elements_by_name(self, name, default=None):
-        return self.find_elements(by=By.NAME, value=name, default=default)
-
-    def find_element_by_tag_name(self, name, default=None):
-        return self.find_element(by=By.TAG_NAME, value=name, default=default)
-
-    def find_elements_by_tag_name(self, name, default=None):
-        return self.find_elements(by=By.TAG_NAME, value=name, default=default)
-
-    def find_element_by_class_name(self, name, default=None):
-        return self.find_element(by=By.CLASS_NAME, value=name, default=default)
-
-    def find_elements_by_class_name(self, name, default=None):
-        return self.find_elements(by=By.CLASS_NAME, value=name, default=default)
-
-    def find_element_by_css_selector(self, css_selector, default=None):
-        return self.find_element(by=By.CSS_SELECTOR, value=css_selector, default=default)
-
-    def find_elements_by_css_selector(self, css_selector, default=None):
-        return self.find_elements(by=By.CSS_SELECTOR, value=css_selector, default=default)
-
-    def find_element(self, by=None, value=None, default=None):
+    def find_element(self, by=None, value=None) -> WebElement:
         """依据定位策略定位指定一个标签"""
         try:
-            return MyElement(super().find_element(by, value))
+            return NodeElement(super().find_element(by, value))
         except Exception as e:
             print("未找到标签:" + by + "=" + value + "(异常:" + e.__class__.__name__ + ")")
-            return default
+            return NoneElement()
 
-    def find_elements(self, by=None, value=None, default=None):
+    def find_elements(self, by=None, value=None) -> List[WebElement]:
         """依据定位策略定位符合条件的所有标签"""
         try:
-            return [MyElement(element) for element in super().find_elements(by, value)]
+            return [NodeElement(element) for element in super().find_elements(by, value)]
         except Exception as e:
             print("未找到标签:" + by + "=" + value + "(异常:" + e.__class__.__name__ + ")")
-            return default if default is not None else []
+            return []
 
     def load_javascript_library(self, name: str):
         """载入JavaScript库"""
