@@ -57,10 +57,10 @@ class NoneElement(WebElement):
         pass
 
     def get_property(self, name):
-        return None
+        return ""
 
     def get_attribute(self, name):
-        return None
+        return ""
 
     def is_selected(self):
         return False
