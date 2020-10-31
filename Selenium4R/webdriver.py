@@ -4,6 +4,7 @@ from typing import List
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.remote.command import Command
 from selenium.webdriver.remote.webelement import WebElement
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -101,11 +102,20 @@ class Chrome(WebDriver):
     def execute_script(self, script, *args):
         """执行JavaScript脚本代码"""
         try:
-            super().execute_script(script, args)
-            return True
+            converted_args = list(args)
+
+            if self.w3c:
+                command = Command.W3C_EXECUTE_SCRIPT
+            else:
+                command = Command.EXECUTE_SCRIPT
+
+            return self.execute(command, {
+                'script': script,
+                'args': converted_args})['value']
+
         except Exception as e:
             print("执行JavaScript脚本代码失败:" + script + "(异常:" + e.__class__.__name__ + ")")
-            return False
+            return None
 
     def load_javascript_library(self, name: str):
         """载入JavaScript库"""
