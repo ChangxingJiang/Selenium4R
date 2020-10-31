@@ -109,9 +109,11 @@ class Chrome(WebDriver):
             else:
                 command = Command.EXECUTE_SCRIPT
 
-            return self.execute(command, {
+            result = self.execute(command, {
                 'script': script,
                 'args': converted_args})['value']
+
+            return result if result else True
 
         except Exception as e:
             print("执行JavaScript脚本代码失败:" + script + "(异常:" + e.__class__.__name__ + ")")
