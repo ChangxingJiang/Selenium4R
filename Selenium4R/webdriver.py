@@ -70,7 +70,8 @@ class Chrome(WebDriver):
 
         # 启动Selenium控制的Chrome浏览器
         super().__init__(executable_path=executable_path, port=port, options=options, service_args=service_args,
-                         desired_capabilities=desired_capabilities, service_log_path=service_log_path, keep_alive=keep_alive)
+                         desired_capabilities=desired_capabilities, service_log_path=service_log_path,
+                         keep_alive=keep_alive)
 
         # 移除网页中的window.navigator.webdriver属性
         self.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
@@ -97,13 +98,21 @@ class Chrome(WebDriver):
             print("未找到标签:" + by + "=" + value + "(异常:" + e.__class__.__name__ + ")")
             return []
 
+    def execute_script(self, script, *args):
+        """执行JavaScript脚本代码"""
+        try:
+            super().execute_script(script, args)
+        except Exception as e:
+            print("执行JavaScript脚本代码失败:" + script + "(异常:" + e.__class__.__name__ + ")")
+            return NoneElement()
+
     def load_javascript_library(self, name: str):
         """载入JavaScript库"""
         if javascript_source := JavaScriptLibrary(self.cache_path).get(name):
             self.execute_script(javascript_source)
 
     def post(self, url, params=None, payload=False):
-        """执行Post请求
+        """执行POST请求
 
         :param url: 请求的目标Url
         :param params: 请求传参
