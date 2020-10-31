@@ -102,9 +102,10 @@ class Chrome(WebDriver):
         """执行JavaScript脚本代码"""
         try:
             super().execute_script(script, args)
+            return True
         except Exception as e:
             print("执行JavaScript脚本代码失败:" + script + "(异常:" + e.__class__.__name__ + ")")
-            return NoneElement()
+            return False
 
     def load_javascript_library(self, name: str):
         """载入JavaScript库"""
